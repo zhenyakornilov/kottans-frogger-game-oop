@@ -34,14 +34,7 @@ class Enemy extends Character {
     this.speed = speed;
     this.direction = direction;
   }
-  // Variables applied to each of our instances go here,
-  // we've provided one for you to get started
 
-  // The image/sprite for our enemies, this uses
-  // a helper we've provided to easily load images;
-
-  // Update the enemy's position, required method for game
-  // Parameter: dt, a time delta between ticks
   update(dt) {
     if (this.direction === "left") {
       this.x -= dt * this.speed;
@@ -80,7 +73,6 @@ class Player extends Character {
   }
 }
 
-// Now instantiate your objects.
 const enemyTop = new Enemy(0, 55, generateSpeed(150, 200), "right", "images/enemy-bug.png");
 const enemyMid = new Enemy(
   600,
