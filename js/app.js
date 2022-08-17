@@ -28,6 +28,7 @@ class Character {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
 }
+
 class Enemy extends Character {
   constructor(x, y, speed, direction, sprite) {
     super(x, y, sprite);
@@ -59,7 +60,6 @@ class Enemy extends Character {
       player.y < this.y + 60 &&
       player.y + 60 > this.y
     ) {
-      console.log(player.x);
       player.x = PLAYER_START_POSITION.x;
       player.y = PLAYER_START_POSITION.y;
     }
