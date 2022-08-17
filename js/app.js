@@ -11,9 +11,11 @@ const PLAYER_START_POSITION = {
 };
 
 const MOVE_STEP = {
-  x: 101,
-  y: 81,
+  axisX: 101,
+  axisY: 81,
 };
+
+const GAME_BOARD_WIDTH = 505;
 
 class Character {
   constructor(x, y, sprite) {
@@ -36,8 +38,30 @@ class Enemy extends Character {
   update(dt) {
     if (this.direction === "left") {
       this.x -= dt * this.speed;
+
+      if (this.x < 0) {
+        this.x = GAME_BOARD_WIDTH + 10;
+      }
     } else {
       this.x += dt * this.speed;
+      if (this.x > GAME_BOARD_WIDTH) {
+        this.x = -10;
+      }
+    }
+
+    this.checkOverlap();
+  }
+
+  checkOverlap() {
+    if (
+      player.x < this.x + 60 &&
+      player.x + 60 > this.x &&
+      player.y < this.y + 60 &&
+      player.y + 60 > this.y
+    ) {
+      console.log(player.x);
+      player.x = PLAYER_START_POSITION.x;
+      player.y = PLAYER_START_POSITION.y;
     }
   }
 }
@@ -60,34 +84,34 @@ class Player extends Character {
   handleInput(btn) {
     console.log("handleInput method");
     if (btn === "up" && this.y !== EDGE_POSITION.topY) {
-      this.y -= MOVE_STEP.y;
+      this.y -= MOVE_STEP.axisY;
     } else if (btn === "down" && this.y !== EDGE_POSITION.bottomY) {
-      this.y += MOVE_STEP.y;
+      this.y += MOVE_STEP.axisY;
     } else if (btn === "left" && this.x !== EDGE_POSITION.leftX) {
-      this.x -= MOVE_STEP.x;
+      this.x -= MOVE_STEP.axisX;
     } else if (btn === "right" && this.x !== EDGE_POSITION.rightX) {
-      this.x += MOVE_STEP.x;
+      this.x += MOVE_STEP.axisX;
     }
   }
 }
 
 const enemiesSettings = [
   {
-    posX: 0,
+    posX: -10,
     posY: 55,
     speed: generateSpeed(100, 300),
     direction: "right",
     img: "images/enemy-bug.png",
   },
   {
-    posX: 600,
+    posX: GAME_BOARD_WIDTH + 10,
     posY: 136,
     speed: generateSpeed(100, 300),
     direction: "left",
     img: "images/enemy-bug-reverse.png",
   },
   {
-    posX: 0,
+    posX: -5,
     posY: 217,
     speed: generateSpeed(100, 300),
     direction: "right",
@@ -96,9 +120,10 @@ const enemiesSettings = [
 ];
 
 const allEnemies = enemiesSettings.map(
-  ({posX, posY, speed, direction, img}) => {
+  ({ posX, posY, speed, direction, img }) => {
     return new Enemy(posX, posY, speed, direction, img);
-  });
+  }
+);
 
 const player = new Player(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y);
 
