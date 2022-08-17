@@ -39,7 +39,6 @@ class Enemy extends Character {
   update(dt) {
     if (this.direction === "left") {
       this.x -= dt * this.speed;
-
       if (this.x < 0) {
         this.x = GAME_BOARD_WIDTH + 10;
       }
