@@ -4,7 +4,7 @@ const EDGE_POSITION = {
   topY: -15,
   bottomY: 390,
 };
-// Place the player object in a variable called player
+
 const PLAYER_START_POSITION = {
   x: 202,
   y: 390,
@@ -15,13 +15,24 @@ const MOVE_STEP = {
   y: 81,
 };
 
-// Enemies our player must avoid
-class Enemy {
-  constructor(x, y, speed) {
-    this.sprite = "images/enemy-bug.png";
+class Character {
+  constructor(x, y, sprite) {
+    this.x = x;
+    this.y = y;
+    this.sprite = sprite;
+  }
+
+  render() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
+}
+class Enemy extends Character {
+  constructor(x, y, speed, direction, sprite) {
+    super(x, y, sprite);
     this.x = x;
     this.y = y;
     this.speed = speed;
+    this.direction = direction;
   }
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
@@ -32,38 +43,27 @@ class Enemy {
   // Update the enemy's position, required method for game
   // Parameter: dt, a time delta between ticks
   update(dt) {
-    console.log(dt);
-    this.x += dt * this.speed;
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-  }
-
-  // Draw the enemy on the screen, required method for game
-  render() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    if (this.direction === "left") {
+      this.x -= dt * this.speed;
+    } else {
+      this.x += dt * this.speed;
+    }
   }
 }
 
-// Now write your own player class
-class Player {
-  constructor(x, y) {
+class Player extends Character {
+  constructor(x, y, sprite) {
+    super(x, y, sprite);
     this.sprite = "images/char-boy.png";
-    this.x = x;
-    this.y = y;
   }
 
-  update() {
+  update(dt) {
     if (this.y === EDGE_POSITION.topY) {
-        setTimeout(() => {
-            this.x = PLAYER_START_POSITION.x
-            this.y = PLAYER_START_POSITION.y
-        }, 1000);
+      setTimeout(() => {
+        this.x = PLAYER_START_POSITION.x;
+        this.y = PLAYER_START_POSITION.y;
+      }, 1000);
     }
-  }
-
-  render() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
 
   handleInput(btn) {
@@ -79,15 +79,20 @@ class Player {
     }
   }
 }
-// This class requires an update(), render() and
-// a handleInput() method.
 
 // Now instantiate your objects.
-const enemyFirst = new Enemy(0, 55, 5);
+const enemyFirst = new Enemy(0, 55, 90, "right", "images/enemy-bug.png");
+const enemyReverse = new Enemy(
+  600,
+  136,
+  50,
+  "left",
+  "images/enemy-bug-reverse.png"
+);
+const enemySecond = new Enemy(0, 217, 90, "right", "images/enemy-bug.png");
 // Place all enemy objects in an array called allEnemies
-const allEnemies = [enemyFirst];
+const allEnemies = [enemyFirst, enemyReverse, enemySecond];
 
-// Water end value is -15
 const player = new Player(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y);
 
 // This listens for key presses and sends the keys to your
