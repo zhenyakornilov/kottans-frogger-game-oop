@@ -29,8 +29,6 @@ class Character {
 class Enemy extends Character {
   constructor(x, y, speed, direction, sprite) {
     super(x, y, sprite);
-    this.x = x;
-    this.y = y;
     this.speed = speed;
     this.direction = direction;
   }
@@ -73,17 +71,34 @@ class Player extends Character {
   }
 }
 
-const enemyTop = new Enemy(0, 55, generateSpeed(150, 200), "right", "images/enemy-bug.png");
-const enemyMid = new Enemy(
-  600,
-  136,
-  generateSpeed(130, 180),
-  "left",
-  "images/enemy-bug-reverse.png"
-);
+const enemiesSettings = [
+  {
+    posX: 0,
+    posY: 55,
+    speed: generateSpeed(100, 300),
+    direction: "right",
+    img: "images/enemy-bug.png",
+  },
+  {
+    posX: 600,
+    posY: 136,
+    speed: generateSpeed(100, 300),
+    direction: "left",
+    img: "images/enemy-bug-reverse.png",
+  },
+  {
+    posX: 0,
+    posY: 217,
+    speed: generateSpeed(100, 300),
+    direction: "right",
+    img: "images/enemy-bug.png",
+  },
+];
 
-const enemyBottom = new Enemy(0, 217, generateSpeed(120, 200), "right", "images/enemy-bug.png");
-const allEnemies = [enemyTop, enemyMid, enemyBottom];
+const allEnemies = enemiesSettings.map(
+  ({posX, posY, speed, direction, img}) => {
+    return new Enemy(posX, posY, speed, direction, img);
+  });
 
 const player = new Player(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y);
 
