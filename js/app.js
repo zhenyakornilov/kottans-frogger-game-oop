@@ -81,22 +81,20 @@ class Player extends Character {
 }
 
 // Now instantiate your objects.
-const enemyFirst = new Enemy(0, 55, 90, "right", "images/enemy-bug.png");
-const enemyReverse = new Enemy(
+const enemyTop = new Enemy(0, 55, generateSpeed(150, 200), "right", "images/enemy-bug.png");
+const enemyMid = new Enemy(
   600,
   136,
-  50,
+  generateSpeed(130, 180),
   "left",
   "images/enemy-bug-reverse.png"
 );
-const enemySecond = new Enemy(0, 217, 90, "right", "images/enemy-bug.png");
-// Place all enemy objects in an array called allEnemies
-const allEnemies = [enemyFirst, enemyReverse, enemySecond];
+
+const enemyBottom = new Enemy(0, 217, generateSpeed(120, 200), "right", "images/enemy-bug.png");
+const allEnemies = [enemyTop, enemyMid, enemyBottom];
 
 const player = new Player(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y);
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
 document.addEventListener("keyup", function (e) {
   var allowedKeys = {
     37: "left",
@@ -108,6 +106,6 @@ document.addEventListener("keyup", function (e) {
   player.handleInput(allowedKeys[e.keyCode]);
 });
 
-function getRandomNumInRange(min, max) {
+function generateSpeed(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
