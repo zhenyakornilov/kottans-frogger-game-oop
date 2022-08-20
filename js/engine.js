@@ -92,7 +92,6 @@ var Engine = (function(global) {
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
-            enemy.checkOverlap();
         });
         player.update();        
     }
